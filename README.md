@@ -52,7 +52,7 @@ As you explore, write down at least five things that feel confusing, inconsisten
 
 ## Observed quirks and issues
 
-1. **Genre overrides energy in classification** — A song with an energy below `hype_min_energy` can still land in Hype if its genre matches `favorite_genre` or a hype keyword like "rock". The `classify_song` condition uses `or`, so genre and keyword checks silently override the energy value. This behavior is not documented anywhere.
+1. **Genre and favorite genre override energy in classification** — A song can be forced into Hype by any one of three independent conditions: its energy meets the threshold, its genre contains a hype keyword ("rock", "punk", "party"), or its genre matches the profile's `favorite_genre`. Because these are joined with `or`, a low-energy song is still classified as Hype if its genre matches — energy is never considered. This behavior is not documented anywhere.
 
 2. **Hype and chill sliders only register every other interaction** — The sliders update on alternating moves: the first move registers, the second does nothing, the third registers, the fourth does nothing, and so on indefinitely. Every other adjustment is silently ignored.
 

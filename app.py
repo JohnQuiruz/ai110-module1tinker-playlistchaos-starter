@@ -276,6 +276,8 @@ def render_playlist(label, songs):
         st.write("No songs in this playlist.")
         return
 
+    favorite_genre = st.session_state.profile.get("favorite_genre", "")
+
     query = st.text_input(f"Search {label} playlist by artist", key=f"search_{label}")
     filtered = search_songs(songs, query, field="artist")
 
@@ -283,7 +285,12 @@ def render_playlist(label, songs):
         st.write("No matching songs.")
         return
 
-    for song in filtered:
+    sorted_songs = sorted(
+        filtered,
+        key=lambda song: song.get("genre", "") != favorite_genre,
+    )
+
+    for song in sorted_songs:
         mood = song.get("mood", "?")
         tags = ", ".join(song.get("tags", []))
         st.write(
