@@ -50,6 +50,28 @@ Run the app and try things out:
 
 As you explore, write down at least five things that feel confusing, inconsistent, or strange. These might be bugs, quirks, or unexpected design decisions.
 
+## Observed quirks and issues
+
+1. **Genre overrides energy in classification** — A song with an energy below `hype_min_energy` can still land in Hype if its genre matches `favorite_genre` or a hype keyword like "rock". The `classify_song` condition uses `or`, so genre and keyword checks silently override the energy value. This behavior is not documented anywhere.
+
+2. **Hype and chill sliders only register every other interaction** — The sliders update on alternating moves: the first move registers, the second does nothing, the third registers, the fourth does nothing, and so on indefinitely. Every other adjustment is silently ignored.
+
+3. **Search only matches exact values** — Typing a partial name into the search box returns no results unless the query exactly matches the entire field value. For example, searching "Eagles" does not surface songs by "The Eagles".
+
+4. **Search returns no results when searching by song attributes** — The search function produces no results regardless of what is typed, even when the query exactly matches a song's artist, title, genre, or other attribute.
+
+5. **Average energy stat is calculated incorrectly** — The average energy displayed in the stats section is only summed from songs in the Hype playlist, then divided by the total number of songs across all playlists. It should use energy values from all songs, not just Hype.
+
+6. **Hype ratio uses the wrong denominator** — The hype ratio is calculated by dividing the number of Hype songs by the length of the Hype playlist itself, always producing 1.0. It should be divided by the total number of songs across all playlists.
+
+7. **"Feeling Lucky" ignores Mixed songs** — The lucky pick feature only draws from the Hype and Chill playlists. Songs classified as Mixed are never considered, regardless of which mode is selected.
+
+8. **Duplicate songs are allowed despite normalization** — Songs are normalized before being added, but there is no deduplication check. Adding the same song multiple times results in duplicates appearing in the playlist.
+
+9. **Merge playlist is a no-op** — `merge_playlists` is always called with an empty dict `{}` as the second argument in `app.py`, so no actual merging ever occurs. The function exists but its purpose is never fulfilled.
+
+---
+
 ### 2. Ask AI for help understanding the code  
 
 Pick one issue from your list. Use an AI coding assistant to:
